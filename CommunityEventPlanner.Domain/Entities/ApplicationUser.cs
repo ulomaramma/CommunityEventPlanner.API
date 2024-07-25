@@ -11,5 +11,11 @@ namespace CommunityEventPlanner.Domain.Entities
     {      
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string ImageUrl { get; set; }
+
+        public List<CustomeUserLogin> CustomeUserLogins { get; set; }
+        public List<EventBooking> EventBookings { get; set; }
+        public List<Event> Events { get; set; }
+
     }
 }

@@ -1,3 +1,4 @@
+using CommunityEventPlanner.Application.Extensions;
 using CommunityEventPlanner.Domain.Entities;
 using CommunityEventPlanner.Infrastructure.DataAccess;
 using CommunityEventPlanner.Infrastructure.Extensions;
@@ -7,13 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>()
-         .AddDefaultTokenProviders();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddApplicationServices(builder.Configuration);
 
 var app = builder.Build();
 

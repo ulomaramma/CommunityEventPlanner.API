@@ -25,7 +25,7 @@ namespace CommunityEventPlanner.Infrastructure.Extensions
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IEventBookingRepository, EventBookingRepository>();
-            services.AddScoped<ICustomUserLoginRepository, UserLoginRepository>();
+            services.AddScoped<ICustomUserLoginRepository, CustomUserLoginRepository>();
             services.AddScoped<IEventAttendeeRepository, EventAttendeeRepository>();
             services.AddScoped<IEventOccurrenceRepository, EventOccurrenceRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();

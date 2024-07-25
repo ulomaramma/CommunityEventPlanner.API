@@ -34,6 +34,13 @@ namespace CommunityEventPlanner.Infrastructure.DataAccess
             modelBuilder.Entity<IdentityUserLogin<string>>().HasKey(iul => new { iul.LoginProvider, iul.ProviderKey });
             modelBuilder.Entity<IdentityUserRole<string>>().HasKey(iur => new { iur.UserId, iur.RoleId });
             modelBuilder.Entity<IdentityUserToken<string>>().HasKey(iut => new { iut.UserId, iut.LoginProvider, iut.Name });
+
+            modelBuilder.Entity<Event>()
+                .HasOne(e => e.User)
+                .WithMany(u => u.Events)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.NoAction);  // Prevent cascading delete
+
         }
         //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         //{
