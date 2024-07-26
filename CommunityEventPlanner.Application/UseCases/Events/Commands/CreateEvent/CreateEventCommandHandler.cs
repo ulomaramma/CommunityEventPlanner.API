@@ -1,7 +1,9 @@
 ﻿using CommunityEventPlanner.Application.Dtos;
 using CommunityEventPlanner.Application.Extensions.MappingExtensions;
 using CommunityEventPlanner.Application.Interfaces.UnitofWork;
+using CommunityEventPlanner.Application.UseCases.Common.Models;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent
 {
-    public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, EventDto>
+    public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, ApiResponse<EventDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -19,14 +21,13 @@ namespace CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<EventDto> Handle(CreateEventCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EventDto>> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
             var newEvent = request.ToEventEntity();
             await _unitOfWork.Events.AddAsync(newEvent);
             await _unitOfWork.CompleteAsync();
-            return newEvent.ToEventDto();
+            var eventDto = newEvent.ToEventDto();
+            return new ApiResponse<EventDto>(true, StatusCodes.Status201Created, eventDto);
         }
-
-
     }
 }

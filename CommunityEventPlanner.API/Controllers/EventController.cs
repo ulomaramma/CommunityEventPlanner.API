@@ -1,7 +1,9 @@
 ﻿using CommunityEventPlanner.API.Models;
 using CommunityEventPlanner.Application.Dtos;
+using CommunityEventPlanner.Application.UseCases.Events.Commands.AddEventAttendees;
 using CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent;
 using CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingEvents;
+using CommunityEventPlanner.Application.UseCases.Users.Command.GoogleSignIn;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,17 +24,24 @@ namespace CommunityEventPlanner.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateEvent([FromBody] CreateEventCommand command)
         {
-            var eventDto = await _mediator.Send(command);
-            var response = new ApiResponse<EventDto>(true, StatusCodes.Status200OK, eventDto, "Event Created Sucessfully");
-            return Ok(response);
+            var response = await _mediator.Send(command);
+            return StatusCode(response.Code, response);
         }
 
         [HttpGet("upcoming")]
         public async Task<IActionResult> GetUpcomingEvents()
         {
-            var eventDtos = await _mediator.Send(new GetUpcomingEventsQuery());
-            var response = new ApiResponse<IEnumerable<EventDto>>(true, StatusCodes.Status200OK, eventDtos);
-            return Ok(response);
+            var response = await _mediator.Send(new GetUpcomingEventsQuery());
+            return StatusCode(response.Code, response);
         }
+
+        [HttpPost("add-attendees")]
+        public async Task<IActionResult> AddEventAttendees([FromBody] AddEventAttendeesCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return StatusCode(response.Code, response);
+        }
+
+       
     }
 }

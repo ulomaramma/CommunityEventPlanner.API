@@ -7,9 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingEvents
+namespace CommunityEventPlanner.Application.UseCases.Users.Command.GoogleSignIn
 {
-    public class GetUpcomingEventsQuery : IRequest<ApiResponse<IEnumerable<EventDto>>>
+    public class GoogleSignInCommand : IRequest<ApiResponse<UserDto>>
     {
+        public string IdToken { get; set; }
     }
 }

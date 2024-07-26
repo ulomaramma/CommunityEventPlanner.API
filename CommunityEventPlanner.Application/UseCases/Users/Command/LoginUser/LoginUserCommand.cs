@@ -7,9 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingEvents
+namespace CommunityEventPlanner.Application.UseCases.Users.Command.LoginUser
 {
-    public class GetUpcomingEventsQuery : IRequest<ApiResponse<IEnumerable<EventDto>>>
+    public class LoginUserCommand : IRequest<ApiResponse<UserDto>>
     {
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

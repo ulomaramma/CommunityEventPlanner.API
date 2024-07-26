@@ -1,4 +1,5 @@
 ﻿using CommunityEventPlanner.Application.Dtos;
+using CommunityEventPlanner.Application.UseCases.Common.Models;
 using CommunityEventPlanner.Domain.Enum;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent
 {
-    public class CreateEventCommand : IRequest<EventDto>
+    public class CreateEventCommand : IRequest<ApiResponse<EventDto>>
     {
         public string Title { get; set; }
         public string Description { get; set; }

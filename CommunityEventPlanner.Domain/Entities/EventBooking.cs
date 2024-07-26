@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommunityEventPlanner.Domain.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,8 @@ namespace CommunityEventPlanner.Domain.Entities
         public decimal Subtotal { get; set; }
         public decimal Total { get; set; }
         public string UserId { get; set; }
+        public BookingStatus Status { get; set; }
         public ApplicationUser User { get; set; }
-        public List<EventAttendee> EventAttendees { get; set; }
+        public List<EventAttendee> EventAttendees { get; set; } = new List<EventAttendee>();
     }
 }

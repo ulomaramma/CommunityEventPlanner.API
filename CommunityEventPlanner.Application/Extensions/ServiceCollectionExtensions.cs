@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using MediatR;
 using FluentValidation;
 using CommunityEventPlanner.Application.UseCases.Common.Behaviour;
+using CommunityEventPlanner.Application.Interfaces.Services;
+using CommunityEventPlanner.Application.Services;
 
 namespace CommunityEventPlanner.Application.Extensions
 {
@@ -24,6 +26,8 @@ namespace CommunityEventPlanner.Application.Extensions
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());          
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddScoped<IAuthService, AuthService>();
+
             return services;
         }
     }

@@ -7,9 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingEvents
+namespace CommunityEventPlanner.Application.UseCases.Events.Commands.StartEventBooking
 {
-    public class GetUpcomingEventsQuery : IRequest<ApiResponse<IEnumerable<EventDto>>>
+    public class StartEventBookingCommand : IRequest<ApiResponse<EventBookingDto>>
     {
+        public int EventId { get; set; }
+        public int NumberOfTickets { get; set; }
     }
 }
