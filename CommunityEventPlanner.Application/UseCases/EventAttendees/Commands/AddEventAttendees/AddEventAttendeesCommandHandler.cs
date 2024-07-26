@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunityEventPlanner.Application.UseCases.Events.Commands.AddEventAttendees
+namespace CommunityEventPlanner.Application.UseCases.EventAttendees.Commands.AddEventAttendees
 {
     public class AddEventAttendeesCommandHandler : IRequestHandler<AddEventAttendeesCommand, ApiResponse<EventBookingDto>>
     {

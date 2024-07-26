@@ -1,5 +1,6 @@
 ﻿using CommunityEventPlanner.Application.Interfaces.Repositories;
 using CommunityEventPlanner.Domain.Entities;
+using CommunityEventPlanner.Domain.Enum;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,11 @@ namespace CommunityEventPlanner.Infrastructure.DataAccess.Repositories
                 .Include(eb => eb.EventAttendees)
                 .FirstOrDefaultAsync(eb => eb.EventBookingId == bookingId);
         }
-
+        public async Task<IEnumerable<EventBooking>> GetIncompleteBookingsByUserIdAsync(string userId)
+        {
+            return await _context.EventBookings
+                .Where(eb => eb.UserId == userId && eb.Status == BookingStatus.Incomplete)
+                .ToListAsync();
+        }
     }
 }

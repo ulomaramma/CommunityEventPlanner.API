@@ -7,11 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunityEventPlanner.Application.UseCases.Events.Commands.AddEventAttendees
+namespace CommunityEventPlanner.Application.UseCases.EventBookings.Commands.CompleteEventBooking
 {
-    public class AddEventAttendeesCommand : IRequest<ApiResponse<EventBookingDto>>
+    public class CompleteEventBookingCommand : IRequest<ApiResponse<EventBookingDto>>
     {
         public int EventBookingId { get; set; }
-        public List<EventAttendeeDto> Attendees { get; set; }
     }
 }

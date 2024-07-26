@@ -1,6 +1,8 @@
 ﻿using CommunityEventPlanner.API.Models;
 using CommunityEventPlanner.Application.Dtos;
-using CommunityEventPlanner.Application.UseCases.Events.Commands.AddEventAttendees;
+using CommunityEventPlanner.Application.UseCases.EventAttendee.Commands.AddEventAttendees;
+using CommunityEventPlanner.Application.UseCases.EventBooking.Commands.CompleteEventBooking;
+using CommunityEventPlanner.Application.UseCases.EventBooking.Queries.GetIncompleteBookings;
 using CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent;
 using CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingEvents;
 using CommunityEventPlanner.Application.UseCases.Users.Command.GoogleSignIn;
@@ -32,6 +34,20 @@ namespace CommunityEventPlanner.API.Controllers
         public async Task<IActionResult> GetUpcomingEvents()
         {
             var response = await _mediator.Send(new GetUpcomingEventsQuery());
+            return StatusCode(response.Code, response);
+        }
+
+        [HttpPost("complete-booking")]
+        public async Task<IActionResult> CompleteEventBooking([FromBody] CompleteEventBookingCommand command)
+        {
+            var response = await _mediator.Send(command);
+            return StatusCode(response.Code, response);
+        }
+
+        [HttpGet("incomplete-bookings")]
+        public async Task<IActionResult> GetIncompleteBookings()
+        {
+            var response = await _mediator.Send(new GetIncompleteBookingsQuery());
             return StatusCode(response.Code, response);
         }
 

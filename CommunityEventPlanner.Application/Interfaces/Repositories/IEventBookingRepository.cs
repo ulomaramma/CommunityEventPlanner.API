@@ -12,5 +12,7 @@ namespace CommunityEventPlanner.Application.Interfaces.Repositories
         Task<IEnumerable<EventBooking>> GetBookingsByUserIdAsync(string userId);
         Task<IEnumerable<EventBooking>> GetBookingsByEventIdAsync(int ticketId);
         Task<EventBooking> GetBookingWithDetailsAsync(int bookingId);
+        Task<IEnumerable<EventBooking>> GetIncompleteBookingsByUserIdAsync(string userId);
+
     }
 }

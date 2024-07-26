@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CommunityEventPlanner.Application.UseCases.Events.Commands.StartEventBooking
+namespace CommunityEventPlanner.Application.UseCases.EventBookings.Commands.StartEventBooking
 {
     public class StartEventBookingCommand : IRequest<ApiResponse<EventBookingDto>>
     {

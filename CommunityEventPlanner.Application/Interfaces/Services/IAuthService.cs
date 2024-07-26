@@ -9,7 +9,7 @@ namespace CommunityEventPlanner.Application.Interfaces.Services
 {
     public interface IAuthService
     {
-        Task<string> GenerateJwtToken(ApplicationUser user)
+        Task<string> GenerateJwtToken(ApplicationUser user);
 
     }
 }
