@@ -1,0 +1,76 @@
+﻿@page "/"
+@page "/signup"
+@layout Layout.AuthLayout
+@inject NavigationManager Navigation
+@inject Services.Interfaces.IAuthService AuthService
+@inject IJSRuntime JSRuntime
+
+@using CommunityEventPlanner.Client.Models.Auth
+
+<h3>SignUp</h3>
+
+<EditForm Model="@signUpRequest" OnValidSubmit="HandleSignUp" FormName="signUpForm">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+
+        <label for="FirstName">First Name: <span class="text-danger">*</span></label>
+        <InputText id="FirstName" class="form-control" @bind-Value="signUpRequest.FirstName" />
+        <ValidationMessage For="@(() => signUpRequest.FirstName)" />
+
+    </div>
+    <div class="form-group">
+        <label for="lastName">Last Name: <span class="text-danger">*</span></label>
+        <InputText id="lastName" class="form-control" @bind-Value="@signUpRequest.LastName" />
+        <ValidationMessage For="@(() => signUpRequest.LastName)" />
+
+    </div>
+    <div class="form-group">
+
+        <label for="email">Email: <span class="text-danger">*</span></label>
+        <InputText id="email" class="form-control" @bind-Value="@signUpRequest.Email" />
+        <ValidationMessage For="@(() => signUpRequest.Email)" />
+
+    </div>
+    <div class="form-group">
+        <label for="password">Password: <span class="text-danger">*</span></label>
+        <InputText id="password" type="password" class="form-control" @bind-Value="@signUpRequest.Password" />
+        <ValidationMessage For="@(() => signUpRequest.Password)" />
+
+    </div>
+    <div class="form-group">
+        <label for="confirmPassword">Confirm Password: <span class="text-danger">*</span></label>
+        <InputText id="confirmPassword" type="password" class="form-control" @bind-Value="@signUpRequest.ConfirmPassword" />
+        <ValidationMessage For="@(() => signUpRequest.ConfirmPassword)" />
+
+    </div>
+    <div class="mt-3">
+        <input type="submit" class="btn btn-primary btn-block" value="Sign Up" />
+    </div>
+    <div class="mt-3">
+        <p>Already have an account? <NavLink href="/login">Login here</NavLink></p>
+    </div>
+</EditForm>
+
+@code {
+    private SignUpRequest signUpRequest = new SignUpRequest();
+
+    private async Task HandleSignUp()
+    {
+        if (signUpRequest != null)
+        {
+            var response = await AuthService.SignUpAsync(signUpRequest);
+            if (response.Success)
+            {
+                await JSRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", response.Data.Token);
+                Navigation.NavigateTo("/home");
+            }
+            else
+            {
+                // Handle sign-up failure
+                Console.WriteLine(response.ErrorMessage);
+            }
+        }
+    }
+
+}

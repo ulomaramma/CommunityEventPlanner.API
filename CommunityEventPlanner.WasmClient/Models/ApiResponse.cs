@@ -1,13 +1,11 @@
-﻿
-
-namespace CommunityEventPlanner.API.Models
+﻿namespace CommunityEventPlanner.Client.Models
 {
     public class ApiResponse<T>
     {
-        public string ErrorMessage { get; set; }
         public bool Success { get; set; }
         public int Code { get; set; }
         public T Data { get; set; }
+        public string ErrorMessage { get; set; }
 
         public ApiResponse(bool success, int code, T data = default, string errorMessage = null)
         {

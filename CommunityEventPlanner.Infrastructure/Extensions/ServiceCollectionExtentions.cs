@@ -6,6 +6,8 @@ using CommunityEventPlanner.Application.Interfaces.Repositories;
 using CommunityEventPlanner.Infrastructure.DataAccess;
 using CommunityEventPlanner.Infrastructure.DataAccess.Repositories;
 using Microsoft.AspNetCore.Identity;
+using CommunityEventPlanner.Application.Interfaces.UnitofWork;
+using CommunityEventPlanner.Infrastructure.DataAccess.UnitOfWork;
 
 namespace CommunityEventPlanner.Infrastructure.Extensions
 {
@@ -29,6 +31,9 @@ namespace CommunityEventPlanner.Infrastructure.Extensions
             services.AddScoped<IEventAttendeeRepository, EventAttendeeRepository>();
             services.AddScoped<IEventOccurrenceRepository, EventOccurrenceRepository>();
             services.AddScoped<ITicketRepository, TicketRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
             return services;
         }
     }

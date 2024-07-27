@@ -1,8 +1,8 @@
 ﻿using CommunityEventPlanner.API.Models;
 using CommunityEventPlanner.Application.Dtos;
-using CommunityEventPlanner.Application.UseCases.EventAttendee.Commands.AddEventAttendees;
-using CommunityEventPlanner.Application.UseCases.EventBooking.Commands.CompleteEventBooking;
-using CommunityEventPlanner.Application.UseCases.EventBooking.Queries.GetIncompleteBookings;
+using CommunityEventPlanner.Application.UseCases.EventAttendees.Commands.AddEventAttendees;
+using CommunityEventPlanner.Application.UseCases.EventBookings.Commands.CompleteEventBooking;
+using CommunityEventPlanner.Application.UseCases.EventBookings.Queries.GetIncompleteBookings;
 using CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent;
 using CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingEvents;
 using CommunityEventPlanner.Application.UseCases.Users.Command.GoogleSignIn;
