@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser
 {
-    public class RegisterUserCommand : IRequest<ApiResponse<UserDto>>
+    public class RegisterUserCommand : IRequest<AuthResponse>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

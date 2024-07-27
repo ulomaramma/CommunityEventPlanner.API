@@ -62,13 +62,12 @@
             var response = await AuthService.SignUpAsync(signUpRequest);
             if (response.Success)
             {
-                await JSRuntime.InvokeVoidAsync("localStorage.setItem", "authToken", response.Data.Token);
                 Navigation.NavigateTo("/home");
             }
             else
             {
                 // Handle sign-up failure
-                Console.WriteLine(response.ErrorMessage);
+                Console.WriteLine(response.Message);
             }
         }
     }

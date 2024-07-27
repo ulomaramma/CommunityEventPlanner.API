@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Users.Command.GoogleSignIn
 {
-    public class GoogleSignInCommand : IRequest<ApiResponse<UserDto>>
+    public class GoogleSignInCommand : IRequest<AuthResponse>
     {
         public string IdToken { get; set; }
     }

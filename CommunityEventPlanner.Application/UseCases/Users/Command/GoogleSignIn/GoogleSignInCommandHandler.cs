@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Users.Command.GoogleSignIn
 {
-    public class GoogleSignInCommandHandler : IRequestHandler<GoogleSignInCommand, ApiResponse<UserDto>>
+    public class GoogleSignInCommandHandler : IRequestHandler<GoogleSignInCommand, AuthResponse>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAuthService _authService;
@@ -26,12 +26,12 @@ namespace CommunityEventPlanner.Application.UseCases.Users.Command.GoogleSignIn
             _authService = authService;
         }
 
-        public async Task<ApiResponse<UserDto>> Handle(GoogleSignInCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponse> Handle(GoogleSignInCommand request, CancellationToken cancellationToken)
         {
             var payload = await GoogleJsonWebSignature.ValidateAsync(request.IdToken);
             if (payload == null)
             {
-                return new ApiResponse<UserDto>(false, StatusCodes.Status400BadRequest, errorMessage: "Invalid Google token.");
+                return new AuthResponse(false, StatusCodes.Status400BadRequest, message: "Invalid Google token.");
             }
 
             var user = await _userManager.FindByEmailAsync(payload.Email);
@@ -49,14 +49,12 @@ namespace CommunityEventPlanner.Application.UseCases.Users.Command.GoogleSignIn
                 if (!result.Succeeded)
                 {
                     var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                    return new ApiResponse<UserDto>(false, StatusCodes.Status400BadRequest, errorMessage: errors);
+                    return new AuthResponse(false, StatusCodes.Status400BadRequest, message: errors);
                 }
             }
 
             var token = await _authService.GenerateJwtToken(user);
-            var userDto = user.ToUserDto(token);
-
-            return new ApiResponse<UserDto>(true, StatusCodes.Status200OK, userDto);
+            return new AuthResponse(true, StatusCodes.Status200OK, jwtToken:token);
         }
     }
 }

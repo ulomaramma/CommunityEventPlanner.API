@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser
 {
-    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, ApiResponse<UserDto>>
+    public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthResponse>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IAuthService _authService;
@@ -25,7 +25,7 @@ namespace CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser
             _authService = authService;
         }
 
-        public async Task<ApiResponse<UserDto>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var user = new ApplicationUser
             {
@@ -40,13 +40,12 @@ namespace CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser
             if (result.Succeeded)
             {
                 var token = await _authService.GenerateJwtToken(user);
-                var userDto = user.ToUserDto(token);
 
-                return new ApiResponse<UserDto>(true, StatusCodes.Status201Created, userDto);
+                return new AuthResponse(true, StatusCodes.Status201Created, jwtToken:token, message: "User Registered Sucessfully");
             }
 
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-            return new ApiResponse<UserDto>(false, StatusCodes.Status400BadRequest, errorMessage: errors);
+            return new AuthResponse(false, StatusCodes.Status400BadRequest, message: errors);
         }
     }
 }

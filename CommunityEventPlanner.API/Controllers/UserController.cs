@@ -22,7 +22,6 @@ namespace CommunityEventPlanner.API.Controllers
         [HttpPost("sigin-up")]
         public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
         {
-            // here
             var response = await _mediator.Send(command);
             return StatusCode(response.Code, response);
         }

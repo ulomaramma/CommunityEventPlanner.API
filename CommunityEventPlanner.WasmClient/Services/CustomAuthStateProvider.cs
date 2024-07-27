@@ -1,4 +1,5 @@
 ﻿using CommunityEventPlanner.Client.Services.Interfaces;
+using CommunityEventPlanner.Client.Utils;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -11,7 +12,6 @@ namespace CommunityEventPlanner.Client.Services
         private readonly HttpClient _httpClient;
         private readonly ILocalStorageService _localStorageService;
 
-        private const string TokenKey = "authToken";
 
         public CustomAuthStateProvider(HttpClient httpClient, ILocalStorageService localStorageService)
         {
@@ -20,7 +20,7 @@ namespace CommunityEventPlanner.Client.Services
         }
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            var token = await _localStorageService.GetItemAsync(TokenKey);
+            var token = await _localStorageService.GetItemAsync(Constants.TokenKey);
             if (string.IsNullOrWhiteSpace(token))
             {
                 return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
@@ -53,7 +53,7 @@ namespace CommunityEventPlanner.Client.Services
 
             _httpClient.DefaultRequestHeaders.Authorization = null;
 
-            await _localStorageService.RemoveItemAsync(TokenKey);
+            await _localStorageService.RemoveItemAsync(Constants.TokenKey);
 
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         }

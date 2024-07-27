@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Users.Command.LoginUser
 {
-    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, ApiResponse<UserDto>>
+    public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, AuthResponse>
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -29,24 +29,22 @@ namespace CommunityEventPlanner.Application.UseCases.Users.Command.LoginUser
             _authService = authService;
         }
 
-        public async Task<ApiResponse<UserDto>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
+        public async Task<AuthResponse> Handle(LoginUserCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
             {
-                return new ApiResponse<UserDto>(false, StatusCodes.Status400BadRequest, errorMessage: "Invalid email or password.");
+                return new AuthResponse(false, StatusCodes.Status400BadRequest, message: "Invalid email or password.");
             }
 
             var result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
             if (!result.Succeeded)
             {
-                return new ApiResponse<UserDto>(false, StatusCodes.Status400BadRequest, errorMessage: "Invalid email or password.");
+                return new AuthResponse(false, StatusCodes.Status400BadRequest, message: "Invalid email or password.");
             }
 
             var token = await _authService.GenerateJwtToken(user);
-            var userDto = user.ToUserDto(token);
-
-            return new ApiResponse<UserDto>(true, StatusCodes.Status200OK, userDto);
+            return new AuthResponse(true, StatusCodes.Status200OK, jwtToken: token, message: "User Logged in Sucessfully.");
         }
 
     }

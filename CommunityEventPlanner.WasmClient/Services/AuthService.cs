@@ -1,24 +1,47 @@
 ﻿using CommunityEventPlanner.Client.Models;
 using CommunityEventPlanner.Client.Models.Auth;
-using CommunityEventPlanner.Client.Models.Dtos;
 using CommunityEventPlanner.Client.Services.Interfaces;
+using CommunityEventPlanner.Client.Utils;
 
 namespace CommunityEventPlanner.Client.Services
 {
     public class AuthService:BaseService, IAuthService
     {
-        public AuthService(HttpClient httpClient) : base(httpClient)
+        private readonly CustomAuthStateProvider _authStateProvider;
+        private readonly ILocalStorageService _localStorageService;
+
+        public AuthService(HttpClient httpClient, CustomAuthStateProvider authStateProvider, ILocalStorageService localStorageService)
+            : base(httpClient)
         {
+            _authStateProvider = authStateProvider;
+            _localStorageService = localStorageService;
         }
 
-        public async Task<ApiResponse<UserDto>> SignUpAsync(SignUpRequest signUpRequest)
+        public async Task<AuthResponse> SignUpAsync(SignUpRequest signUpRequest)
         {
-            return await PostAsync<ApiResponse<UserDto>>("api/auth/sign-up", signUpRequest);
+            var response =  await PostAsync<AuthResponse>("api/auth/sign-up", signUpRequest);
+            if (response?.Success == true)
+            {
+                await _localStorageService.SetItemAsync(Constants.TokenKey, response.JwtToken);
+                _authStateProvider.MarkUserAsAuthenticated(response.JwtToken);
+            }
+            return response;
         }
 
-        public async Task<ApiResponse<UserDto>> LoginAsync(LoginRequest loginRequest)
+        public async Task<AuthResponse> LoginAsync(LoginRequest loginRequest)
         {
-            return await PostAsync<ApiResponse<UserDto>>("api/auth/login", loginRequest);
+            var response = await PostAsync<AuthResponse>("api/auth/login", loginRequest);
+            if (response?.Success == true)
+            {
+                await _localStorageService.SetItemAsync(Constants.TokenKey, response.JwtToken);
+                _authStateProvider.MarkUserAsAuthenticated(response.JwtToken);
+            }
+            return response;
+        }
+        public async Task LogoutAsync()
+        {
+            await _localStorageService.RemoveItemAsync(Constants.TokenKey);
+            await _authStateProvider.MarkUserAsLoggedOut();
         }
     }
 }
