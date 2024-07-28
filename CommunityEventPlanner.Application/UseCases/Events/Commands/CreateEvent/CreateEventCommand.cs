@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent
 {
-    public class CreateEventCommand : IRequest<ApiResponse<EventDto>>
+    public class CreateEventCommand : IRequest<ApiResponse>
     {
         public string Title { get; set; }
         public string Description { get; set; }

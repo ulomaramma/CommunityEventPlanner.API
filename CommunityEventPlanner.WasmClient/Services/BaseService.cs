@@ -16,7 +16,6 @@ namespace CommunityEventPlanner.Client.Services
         public async Task<T> GetAsync<T>(string uri)
         {
             var response = await _httpClient.GetAsync(uri);
-            response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<T>();
             if (result == null)
             {
@@ -28,7 +27,6 @@ namespace CommunityEventPlanner.Client.Services
         public async Task<T> PostAsync<T>(string uri, object value)
         {
             var response = await _httpClient.PostAsJsonAsync(uri, value);
-            response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<T>();
             if (result == null)
             {
@@ -40,7 +38,6 @@ namespace CommunityEventPlanner.Client.Services
         public async Task<T> PutAsync<T>(string uri, object value)
         {
             var response = await _httpClient.PutAsJsonAsync(uri, value);
-            response.EnsureSuccessStatusCode();
             var result = await response.Content.ReadFromJsonAsync<T>();
             if (result == null)
             {

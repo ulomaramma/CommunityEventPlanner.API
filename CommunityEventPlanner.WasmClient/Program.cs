@@ -6,18 +6,32 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
+try
+{
 
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(Constants.BaseUrl) });
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
+    var builder = WebAssemblyHostBuilder.CreateDefault(args);
+    builder.RootComponents.Add<App>("#app");
+    builder.RootComponents.Add<HeadOutlet>("head::after");
 
-// Add authentication services
-builder.Services.AddOptions();
-builder.Services.AddAuthorizationCore();
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+    builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(Constants.BaseUrl) });
+    builder.Services.AddScoped<IBaseService, BaseService>();
+    builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
+    builder.Services.AddScoped<IAuthService, AuthService>();
+    builder.Services.AddScoped<CustomAuthStateProvider>();
+    builder.Services.AddScoped<IEventService, EventService>();
 
+    builder.Services.AddOptions();
+    builder.Services.AddAuthorizationCore();
+    builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
-await builder.Build().RunAsync();
+    // Configure logging
+    builder.Logging.SetMinimumLevel(LogLevel.Debug);
+
+    await builder.Build().RunAsync();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Exception during startup: {ex.Message}");
+    throw;
+}
+

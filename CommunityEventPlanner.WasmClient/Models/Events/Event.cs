@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CommunityEventPlanner.Application.Dtos
+﻿namespace CommunityEventPlanner.Client.Models.Events
 {
-    public class EventDto
+    public class Event
     {
         public int EventId { get; set; }
         public string Title { get; set; }

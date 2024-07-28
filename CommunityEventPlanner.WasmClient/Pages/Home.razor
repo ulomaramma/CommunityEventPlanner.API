@@ -1,7 +1,42 @@
 ﻿@page "/home"
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+@attribute [Authorize]
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Hello, @userEmail !</h1>
 
-Welcome to your new app.
+Welcome to Event Planner app.
+
+
+@code {
+    private string authMessage;
+    private string userEmail;
+    private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity.IsAuthenticated)
+            {
+                userEmail = user.FindFirst(c => c.Type == "email")?.Value;
+            }
+            else
+            {
+                Navigation.NavigateTo("/login");
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+
+    }
+}

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityEventPlanner.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -19,7 +19,7 @@ namespace CommunityEventPlanner.API.Controllers
         }
 
 
-        [HttpPost("sigin-up")]
+        [HttpPost("sign-up")]
         public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
         {
             var response = await _mediator.Send(command);
@@ -33,7 +33,7 @@ namespace CommunityEventPlanner.API.Controllers
             return StatusCode(response.Code, response);
         }
 
-        [HttpPost("google-signin")]
+        [HttpPost("google-sign")]
         public async Task<IActionResult> GoogleSignIn([FromBody] GoogleSignInCommand command)
         {
             var response = await _mediator.Send(command);

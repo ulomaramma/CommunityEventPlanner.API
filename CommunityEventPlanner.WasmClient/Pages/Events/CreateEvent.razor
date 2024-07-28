@@ -1,0 +1,138 @@
+﻿@page "/create-event"
+@using Models.Events
+@inject NavigationManager Navigation
+@inject Services.Interfaces.IEventService EventService
+@inject IJSRuntime JSRuntime
+
+
+<h3>CreateEvent</h3>
+<EditForm Model="createEventRequest" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="title">Title</label>
+        <InputText id="title" class="form-control" @bind-Value="createEventRequest.Title" />
+        <ValidationMessage For="@(() => createEventRequest.Title)" />
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <InputTextArea id="description" class="form-control" @bind-Value="createEventRequest.Description" />
+        <ValidationMessage For="@(() => createEventRequest.Description)" />
+    </div>
+
+    <div class="form-group">
+        <label for="startDate">Start Date</label>
+        <InputDate id="startDate" class="form-control" @bind-Value="createEventRequest.StartDate" />
+        <ValidationMessage For="@(() => createEventRequest.StartDate)" />
+    </div>
+
+    <div class="form-group">
+        <label for="endDate">End Date</label>
+        <InputDate id="endDate" class="form-control" @bind-Value="createEventRequest.EndDate" />
+        <ValidationMessage For="@(() => createEventRequest.EndDate)" />
+    </div>
+
+    <div class="form-group">
+        <label for="startTime">Start Time</label>
+        <InputDate id="startTime" class="form-control" @bind-Value="createEventRequest.StartTime" />
+        <ValidationMessage For="@(() => createEventRequest.StartTime)" />
+    </div>
+
+    <div class="form-group">
+        <label for="endTime">End Time</label>
+        <InputDate  id="endTime" class="form-control" @bind-Value="createEventRequest.EndTime" />
+        <ValidationMessage For="@(() => createEventRequest.EndTime)" />
+    </div>
+
+    <div class="form-group">
+        <label for="location">Location</label>
+        <InputText id="location" class="form-control" @bind-Value="createEventRequest.Location" @onfocus="@(() => JSRuntime.InvokeVoidAsync("initAutocomplete"))" />
+        <ValidationMessage For="@(() => createEventRequest.Location)" />
+    </div>
+
+    <div class="form-group">
+        <label for="isPhysical">Is Physical</label>
+        <InputCheckbox id="isPhysical" class="form-control" @bind-Value="createEventRequest.IsPhysical" />
+    </div>
+
+    <div class="form-group">
+        <label for="accessLink">Access Link</label>
+        <InputText id="accessLink" class="form-control" @bind-Value="createEventRequest.AccessLink" />
+    </div>
+
+    <div class="form-group">
+        <label for="isFree">Is Free</label>
+        <InputCheckbox id="isFree" class="form-control" @bind-Value="createEventRequest.IsFree" />
+    </div>
+
+    <div class="form-group" @attributes="GetCostAttributes()">
+        <label for="cost">Cost</label>
+        <InputNumber id="cost" class="form-control" @bind-Value="createEventRequest.Cost" />
+        <ValidationMessage For="@(() => createEventRequest.Cost)" />
+    </div>
+
+    <div class="form-group">
+        <label for="capacity">Capacity</label>
+        <InputNumber id="capacity" class="form-control" @bind-Value="createEventRequest.Capacity" />
+        <ValidationMessage For="@(() => createEventRequest.Capacity)" />
+    </div>
+
+    <div class="form-group">
+        <label for="imageUpload">Image Upload</label>
+        <InputFile id="imageUpload" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Event</button>
+</EditForm>
+@code {
+    private CreateEventRequest createEventRequest = new CreateEventRequest();
+    private IBrowserFile uploadedImage;
+
+    private async Task HandleValidSubmit()
+    {
+        //if (uploadedImage != null)
+        //{
+        //    var imageUrl = await UploadImageAsync(uploadedImage);
+        //    createEventRequest.ImageUrl = imageUrl;
+        //}
+
+        var response = await EventService.CreateEventAsync(createEventRequest);
+        if (response.Success)
+        {
+            Navigation.NavigateTo("/upcoming-events");
+        }
+        else
+        {
+            // Handle failure
+            Console.WriteLine(response.Message);
+        }
+    }
+
+    //private async Task<string> UploadImageAsync(IBrowserFile imageFile)
+    //{
+    //    var buffer = new byte[imageFile.Size];
+    //    await imageFile.OpenReadStream().ReadAsync(buffer);
+
+    //    var base64String = Convert.ToBase64String(buffer);
+    //    var response = await JSRuntime.InvokeAsync<string>("uploadImage", base64String, imageFile.Name);
+
+    //    return response;
+    //}
+
+    private void HandleImageUpload(InputFileChangeEventArgs e)
+    {
+        uploadedImage = e.File;
+    }
+
+    private Dictionary<string, object> GetCostAttributes()
+    {
+        var attributes = new Dictionary<string, object>();
+        if (createEventRequest.IsFree)
+        {
+            attributes.Add("disabled", "disabled");
+        }
+        return attributes;
+    }
+}

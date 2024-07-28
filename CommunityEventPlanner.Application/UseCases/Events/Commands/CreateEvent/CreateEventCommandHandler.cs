@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent
 {
-    public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, ApiResponse<EventDto>>
+    public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, ApiResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -21,13 +21,13 @@ namespace CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse<EventDto>> Handle(CreateEventCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
             var newEvent = request.ToEventEntity();
             await _unitOfWork.Events.AddAsync(newEvent);
             await _unitOfWork.CompleteAsync();
             var eventDto = newEvent.ToEventDto();
-            return new ApiResponse<EventDto>(true, StatusCodes.Status201Created, eventDto);
+            return new ApiResponse(true, StatusCodes.Status201Created, eventDto, "Event Created Successfully");
         }
     }
 }

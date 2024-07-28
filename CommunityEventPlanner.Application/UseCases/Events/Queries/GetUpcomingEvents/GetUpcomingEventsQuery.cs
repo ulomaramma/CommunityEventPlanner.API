@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingEvents
 {
-    public class GetUpcomingEventsQuery : IRequest<ApiResponse<IEnumerable<EventDto>>>
+    public class GetUpcomingEventsQuery : IRequest<ApiResponse>
     {
     }
 }

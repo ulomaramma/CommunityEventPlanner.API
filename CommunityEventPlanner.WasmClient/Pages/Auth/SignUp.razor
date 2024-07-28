@@ -9,6 +9,12 @@
 
 <h3>SignUp</h3>
 
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessage
+    </div>
+}
 <EditForm Model="@signUpRequest" OnValidSubmit="HandleSignUp" FormName="signUpForm">
     <DataAnnotationsValidator />
 
@@ -45,7 +51,18 @@
 
     </div>
     <div class="mt-3">
-        <input type="submit" class="btn btn-primary btn-block" value="Sign Up" />
+
+        <button type="submit" class="btn btn-primary btn-block" disabled="@isLoading">
+            @if (isLoading)
+            {
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                <span class="sr-only">Loading...</span>
+            }
+            else
+            {
+             <span>Sign Up</span> 
+            }
+        </button>
     </div>
     <div class="mt-3">
         <p>Already have an account? <NavLink href="/login">Login here</NavLink></p>
@@ -54,9 +71,13 @@
 
 @code {
     private SignUpRequest signUpRequest = new SignUpRequest();
+    private string errorMessage;
+    private bool isLoading;
 
     private async Task HandleSignUp()
     {
+        isLoading = true;
+
         if (signUpRequest != null)
         {
             var response = await AuthService.SignUpAsync(signUpRequest);
@@ -66,10 +87,13 @@
             }
             else
             {
-                // Handle sign-up failure
-                Console.WriteLine(response.Message);
+                errorMessage = response.Message;
+                StateHasChanged();
+
             }
         }
+        isLoading = false;
+
     }
 
 }

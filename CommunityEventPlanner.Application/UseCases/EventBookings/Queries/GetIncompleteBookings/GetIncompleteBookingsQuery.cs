@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.EventBookings.Queries.GetIncompleteBookings
 {
-    public class GetIncompleteBookingsQuery : IRequest<ApiResponse<IEnumerable<EventBookingDto>>>
+    public class GetIncompleteBookingsQuery : IRequest<ApiResponse>
     {
     }
 }
