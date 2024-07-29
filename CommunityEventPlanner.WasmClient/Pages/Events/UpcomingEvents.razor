@@ -43,7 +43,7 @@ else
                             {
                                 <p class="card-text text-danger">@evt.Cost.ToString("C")</p>
                             }
-                            <a href="@(evt.IsPhysical ? $"https://maps.google.com/?q={evt.Location}" : evt.AccessLink)" class="btn btn-primary" target="_blank">
+                            <a href="#" class="btn btn-primary" target="_blank">
                                 More Info
                             </a>
                         </div>
@@ -59,15 +59,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var response = await EventService.GetUpcomingEventsAsync();
-        if (response.Success)
-        {
-            events = response.Data as List<Event>;
-        }
-        else
-        {
-            Console.WriteLine(response.Message);
-            events = new List<Event>(); // Initialize as empty list to show no events found message
-        }
+        events = await EventService.GetUpcomingEventsAsync();
     }
 }

@@ -1,17 +1,46 @@
 ﻿@inherits LayoutComponentBase
 
+    <div class="nav-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="#">
+                <img src="Everflow-logo.png" alt="Logo"  class="d-inline-block align-top">
+            </a>
+        </nav>
+    </div>
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
+            <h3> Everflow Community Event Planner </h3>
+
             <div class="card">
-                <div class="card-header">
-                    <h3>Event Planner </h3>
-                </div>
-                <div class="card-body">
-                    @Body
-                </div>
+                @Body
+               
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    .nav-header {
+        background-color: white;
+        padding: 10px 0;
+    }
+
+        .nav-header .navbar-brand {
+            color: white;
+        }
+
+            .nav-header .navbar-brand:hover {
+                color: white;
+            }
+
+    h3 {
+        color: #ff0082;
+        text-align: center;
+        font-family:Magneto;
+    }
+
+    .card {
+        padding: 20px;
+    }
+</style>

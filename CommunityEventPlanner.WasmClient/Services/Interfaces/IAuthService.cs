@@ -7,5 +7,6 @@ namespace CommunityEventPlanner.Client.Services.Interfaces
     {
         Task<AuthResponse> LoginAsync(LoginRequest loginRequest);
         Task<AuthResponse> SignUpAsync(SignUpRequest signUpRequest);
+        Task LogoutAsync();
     }
 }

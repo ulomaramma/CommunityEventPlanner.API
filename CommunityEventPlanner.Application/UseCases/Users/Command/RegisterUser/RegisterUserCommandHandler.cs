@@ -17,6 +17,7 @@ namespace CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser
     public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthResponse>
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthService _authService;
 
         public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager, IAuthService authService)
@@ -39,8 +40,8 @@ namespace CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser
 
             if (result.Succeeded)
             {
+                // await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
                 var token = await _authService.GenerateJwtToken(user);
-
                 return new AuthResponse(true, StatusCodes.Status201Created, jwtToken:token, message: "User Registered Sucessfully");
             }
 

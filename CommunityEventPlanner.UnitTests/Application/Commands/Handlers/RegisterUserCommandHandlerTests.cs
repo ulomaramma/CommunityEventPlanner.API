@@ -61,7 +61,7 @@ namespace CommunityEventPlanner.UnitTests.Application.Commands.Handlers
             {
                 FirstName = "John",
                 LastName = "Doe",
-                Email = "test.user@everflowutilities.com",
+                Email = "invalid-email",
                 Password = "Password123!"
             };
 

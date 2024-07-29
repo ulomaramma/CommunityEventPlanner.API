@@ -2,6 +2,7 @@
 using CommunityEventPlanner.Client.Models.Auth;
 using CommunityEventPlanner.Client.Services.Interfaces;
 using CommunityEventPlanner.Client.Utils;
+using System.Net.Http.Headers;
 
 namespace CommunityEventPlanner.Client.Services
 {
@@ -22,7 +23,6 @@ namespace CommunityEventPlanner.Client.Services
             var response =  await PostAsync<AuthResponse>("api/auth/sign-up", signUpRequest);
             if (response?.Success == true)
             {
-                await _localStorageService.SetItemAsync(Constants.TokenKey, response.JwtToken);
                 _authStateProvider.MarkUserAsAuthenticated(response.JwtToken);
             }
             return response;
@@ -33,13 +33,13 @@ namespace CommunityEventPlanner.Client.Services
             var response = await PostAsync<AuthResponse>("api/auth/login", loginRequest);
             if (response?.Success == true)
             {
-                await _localStorageService.SetItemAsync(Constants.TokenKey, response.JwtToken);
                 _authStateProvider.MarkUserAsAuthenticated(response.JwtToken);
             }
             return response;
         }
         public async Task LogoutAsync()
         {
+            _httpClient.DefaultRequestHeaders.Authorization = null;
             await _localStorageService.RemoveItemAsync(Constants.TokenKey);
             await _authStateProvider.MarkUserAsLoggedOut();
         }

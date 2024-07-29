@@ -18,9 +18,12 @@ namespace CommunityEventPlanner.Infrastructure.Extensions
 
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultTokenProviders();
+
+          
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 

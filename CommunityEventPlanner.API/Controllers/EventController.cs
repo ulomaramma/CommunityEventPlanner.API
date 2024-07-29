@@ -7,12 +7,14 @@ using CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent;
 using CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingEvents;
 using CommunityEventPlanner.Application.UseCases.Users.Command.GoogleSignIn;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CommunityEventPlanner.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
+    [Route("api/events")]
     [ApiController]
     public class EventController : ControllerBase
     {

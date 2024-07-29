@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Domain.Entities
 {
-    public class EventCategory : BaseEntity
+    public class EventCategory 
     {
         public int EventCategoryId { get; set; }
         public string Name { get; set; }

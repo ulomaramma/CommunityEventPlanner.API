@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-try
-{
 
     var builder = WebAssemblyHostBuilder.CreateDefault(args);
     builder.RootComponents.Add<App>("#app");
@@ -24,14 +22,8 @@ try
     builder.Services.AddAuthorizationCore();
     builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
-    // Configure logging
     builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
     await builder.Build().RunAsync();
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Exception during startup: {ex.Message}");
-    throw;
-}
+
 

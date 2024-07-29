@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.EventAttendees.Commands.AddEventAttendees
 {
-    public class AddEventAttendeesCommandHandler : IRequestHandler<AddEventAttendeesCommand, ApiResponse>
+    public class AddEventAttendeesCommandHandler : IRequestHandler<AddEventAttendeesCommand, ApiResponse<EventBookingDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -23,12 +23,12 @@ namespace CommunityEventPlanner.Application.UseCases.EventAttendees.Commands.Add
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ApiResponse> Handle(AddEventAttendeesCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EventBookingDto>> Handle(AddEventAttendeesCommand request, CancellationToken cancellationToken)
         {
             var eventBooking = await _unitOfWork.EventBookings.GetByIdAsync(request.EventBookingId);
             if (eventBooking == null || eventBooking.Status == BookingStatus.Complete)
             {
-                return new ApiResponse(false, StatusCodes.Status404NotFound, message: "Event booking not found or already completed.");
+                return new ApiResponse<EventBookingDto>(false, StatusCodes.Status404NotFound, message: "Event booking not found or already completed.");
             }
 
             var eventAttendees = request.Attendees.Select(a => new EventAttendee
@@ -49,7 +49,7 @@ namespace CommunityEventPlanner.Application.UseCases.EventAttendees.Commands.Add
 
             var eventBookingDto = eventBooking.ToEventBookingDto();
 
-            return new ApiResponse(true, StatusCodes.Status200OK, eventBookingDto);
+            return new ApiResponse<EventBookingDto>(true, StatusCodes.Status200OK, eventBookingDto);
         }
     }
 }

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.EventBookings.Commands.StartEventBooking
 {
-    public class StartEventBookingCommandHandler : IRequestHandler<StartEventBookingCommand, ApiResponse>
+    public class StartEventBookingCommandHandler : IRequestHandler<StartEventBookingCommand, ApiResponse<EventBookingDto>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -26,12 +26,12 @@ namespace CommunityEventPlanner.Application.UseCases.EventBookings.Commands.Star
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ApiResponse> Handle(StartEventBookingCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<EventBookingDto>> Handle(StartEventBookingCommand request, CancellationToken cancellationToken)
         {
             var eventEntity = await _unitOfWork.Events.GetByIdAsync(request.EventId);
             if (eventEntity == null)
             {
-                return new ApiResponse(false, StatusCodes.Status404NotFound, message: "Event not found.");
+                return new ApiResponse<EventBookingDto>(false, StatusCodes.Status404NotFound, message: "Event not found.");
             }
 
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -52,7 +52,7 @@ namespace CommunityEventPlanner.Application.UseCases.EventBookings.Commands.Star
 
             var eventBookingDto = eventBooking.ToEventBookingDto();
 
-            return new ApiResponse(true, StatusCodes.Status201Created, eventBookingDto);
+            return new ApiResponse<EventBookingDto>(true, StatusCodes.Status201Created, eventBookingDto);
         }
     }
 }

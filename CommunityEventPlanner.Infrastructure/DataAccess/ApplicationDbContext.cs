@@ -1,5 +1,6 @@
 ﻿using CommunityEventPlanner.Domain.Entities;
 using CommunityEventPlanner.Domain.Enum;
+using CommunityEventPlanner.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +42,10 @@ namespace CommunityEventPlanner.Infrastructure.DataAccess
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.NoAction);  // Prevent cascading delete
 
+
+            modelBuilder.Seed();
+
+
         }
         //public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         //{
@@ -51,7 +56,7 @@ namespace CommunityEventPlanner.Infrastructure.DataAccess
         //private void UpdateAuditFields()
         //{
         //    var entries = ChangeTracker.Entries<BaseEntity>();
-        //    var currentUserId = Guid.NewGuid();
+        //    var currentUserId = Guid.NewGuid().ToString();// this should come from  logged in userId
 
         //    foreach (var entry in entries)
         //    {
@@ -67,5 +72,22 @@ namespace CommunityEventPlanner.Infrastructure.DataAccess
         //        }
         //    }
         //}
+        public  async Task SeedUsers(UserManager<ApplicationUser> userManager)
+        {
+            if (!userManager.Users.Any())
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = "dan.marley@everflowutilities.com",
+                    Email = "dan.marley@everflowutilities.com",
+                    FirstName = "Dan",
+                    LastName = "Marley",
+                    EmailConfirmed = true
+                };
+
+                var result = await userManager.CreateAsync(user, "P@ssw0rd");             
+            }
+        }
+
     }
 }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.EventBookings.Queries.GetIncompleteBookings
 {
-    public class GetIncompleteBookingsQueryHandler : IRequestHandler<GetIncompleteBookingsQuery, ApiResponse>
+    public class GetIncompleteBookingsQueryHandler : IRequestHandler<GetIncompleteBookingsQuery, ApiResponse<IEnumerable<EventBookingDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -24,7 +24,7 @@ namespace CommunityEventPlanner.Application.UseCases.EventBookings.Queries.GetIn
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<ApiResponse> Handle(GetIncompleteBookingsQuery request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<IEnumerable<EventBookingDto>>> Handle(GetIncompleteBookingsQuery request, CancellationToken cancellationToken)
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -32,7 +32,7 @@ namespace CommunityEventPlanner.Application.UseCases.EventBookings.Queries.GetIn
 
             var bookingDtos = incompleteBookings.Select(eb => eb.ToEventBookingDto());
 
-            return new ApiResponse(true, StatusCodes.Status200OK, bookingDtos);
+            return new ApiResponse<IEnumerable< EventBookingDto>>(true, StatusCodes.Status200OK, bookingDtos);
         }
     }
 }

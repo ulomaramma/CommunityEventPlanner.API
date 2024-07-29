@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.EventBookings.Commands.CompleteEventBooking
 {
-    public class CompleteEventBookingCommand : IRequest<ApiResponse>
+    public class CompleteEventBookingCommand : IRequest<ApiResponse<EventBookingDto>>
     {
         public int EventBookingId { get; set; }
     }

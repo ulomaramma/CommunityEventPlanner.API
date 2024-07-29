@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Domain.Entities
 {
-    public class Event: BaseEntity
+    public class Event
     {
         public int EventId { get; set; }
         public string Title { get; set; }
@@ -27,7 +27,7 @@ namespace CommunityEventPlanner.Domain.Entities
         public int EventCategoryId { get; set; }
         public EventCategory EventCategory { get; set; }
         public string? UserId { get; set; }
-        public ApplicationUser User { get; set; }
+        public ApplicationUser? User { get; set; }
         public EventType EventType { get; set; }
         public EventStatus EventStatus { get; set; } 
         public List<EventBooking> EventBookings { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.UnitTests.Application.Services
 {
-    internal class AuthServiceTests
+    public class AuthServiceTests
     {
     }
 }

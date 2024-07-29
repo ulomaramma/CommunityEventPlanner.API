@@ -4,6 +4,7 @@ using CommunityEventPlanner.Infrastructure.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CommunityEventPlanner.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240728103610_seeddata")]
+    partial class seeddata
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,48 +183,6 @@ namespace CommunityEventPlanner.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Events");
-
-                    b.HasData(
-                        new
-                        {
-                            EventId = 1,
-                            AccessLink = "",
-                            Capacity = 500,
-                            Cost = 299.99m,
-                            Description = "Annual tech conference covering the latest in technology.",
-                            EndDate = new DateTime(2024, 9, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndTime = new TimeSpan(0, 19, 0, 0, 0),
-                            EventCategoryId = 1,
-                            EventStatus = 1,
-                            EventType = 0,
-                            ImageUrl = "",
-                            IsFree = false,
-                            IsPhysical = true,
-                            Location = "New York Convention Center",
-                            StartDate = new DateTime(2024, 8, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartTime = new TimeSpan(0, 9, 0, 0, 0),
-                            Title = "Tech Conference 2024"
-                        },
-                        new
-                        {
-                            EventId = 2,
-                            AccessLink = "https://meet.google.com/oaf-ernz-mxi?hs=122&authuser=0",
-                            Capacity = 1000,
-                            Cost = 0m,
-                            Description = "Interactive online workshop on artificial intelligence.",
-                            EndDate = new DateTime(2024, 9, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EndTime = new TimeSpan(0, 17, 0, 0, 0),
-                            EventCategoryId = 2,
-                            EventStatus = 1,
-                            EventType = 0,
-                            ImageUrl = "",
-                            IsFree = true,
-                            IsPhysical = false,
-                            Location = "Online",
-                            StartDate = new DateTime(2024, 8, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            StartTime = new TimeSpan(0, 10, 0, 0, 0),
-                            Title = "Online Workshop on AI"
-                        });
                 });
 
             modelBuilder.Entity("CommunityEventPlanner.Domain.Entities.EventAttendee", b =>

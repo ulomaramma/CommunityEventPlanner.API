@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingEvents
 {
-    public class GetUpcomingEventsQueryHandler : IRequestHandler<GetUpcomingEventsQuery, ApiResponse>
+    public class GetUpcomingEventsQueryHandler : IRequestHandler<GetUpcomingEventsQuery, ApiResponse<IEnumerable<EventDto>>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -21,11 +21,11 @@ namespace CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingE
             _unitOfWork = unitOfWork;
         }
 
-        public async Task <ApiResponse> Handle(GetUpcomingEventsQuery request, CancellationToken cancellationToken)
+        public async Task <ApiResponse<IEnumerable<EventDto>>> Handle(GetUpcomingEventsQuery request, CancellationToken cancellationToken)
         {
             var upcomingEvents = await _unitOfWork.Events.GetUpcomingEventsAsync(DateTime.UtcNow);
             var eventDtos = upcomingEvents.Select(e => e.ToEventDto());
-            return new ApiResponse(true,StatusCodes.Status200OK,eventDtos);
+            return new ApiResponse<IEnumerable< EventDto>>(true,StatusCodes.Status200OK,eventDtos);
         }
     }
 }

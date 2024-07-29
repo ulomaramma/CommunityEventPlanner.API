@@ -5,7 +5,7 @@ namespace CommunityEventPlanner.Client.Services.Interfaces
 {
     public interface IEventService
     {
-        Task<ApiResponse> GetUpcomingEventsAsync();
-        Task<ApiResponse> CreateEventAsync(CreateEventRequest request);
+        Task<List<Event>> GetUpcomingEventsAsync();
+        Task<ApiResponse<Event>> CreateEventAsync(CreateEventRequest request);
     }
 }
