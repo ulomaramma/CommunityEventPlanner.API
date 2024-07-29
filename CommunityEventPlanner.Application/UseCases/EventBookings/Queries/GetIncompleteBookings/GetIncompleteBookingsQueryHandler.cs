@@ -28,7 +28,7 @@ namespace CommunityEventPlanner.Application.UseCases.EventBookings.Queries.GetIn
         {
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var incompleteBookings = await _unitOfWork.EventBookings.GetIncompleteBookingsByUserIdAsync(userId);
+            var incompleteBookings = await _unitOfWork.EventBookingRepository.GetIncompleteBookingsByUserIdAsync(userId);
 
             var bookingDtos = incompleteBookings.Select(eb => eb.ToEventBookingDto());
 

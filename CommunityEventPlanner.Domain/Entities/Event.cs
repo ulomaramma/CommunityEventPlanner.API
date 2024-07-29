@@ -19,7 +19,7 @@ namespace CommunityEventPlanner.Domain.Entities
         public TimeSpan EndTime { get; set; } 
         public string Location { get; set; }
         public bool IsPhysical { get; set; }
-        public string AccessLink { get; set; }
+        public string? AccessLink { get; set; }
         public string? ImageUrl { get; set; }
         public bool IsFree { get; set; }
         public decimal Cost { get; set; }

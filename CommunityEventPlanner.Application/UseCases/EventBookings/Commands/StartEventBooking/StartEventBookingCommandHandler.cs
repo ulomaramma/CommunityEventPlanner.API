@@ -28,7 +28,7 @@ namespace CommunityEventPlanner.Application.UseCases.EventBookings.Commands.Star
 
         public async Task<ApiResponse<EventBookingDto>> Handle(StartEventBookingCommand request, CancellationToken cancellationToken)
         {
-            var eventEntity = await _unitOfWork.Events.GetByIdAsync(request.EventId);
+            var eventEntity = await _unitOfWork.EventRepository.GetByIdAsync(request.EventId);
             if (eventEntity == null)
             {
                 return new ApiResponse<EventBookingDto>(false, StatusCodes.Status404NotFound, message: "Event not found.");
@@ -47,7 +47,7 @@ namespace CommunityEventPlanner.Application.UseCases.EventBookings.Commands.Star
                 Status = BookingStatus.Incomplete,
             };
 
-            await _unitOfWork.EventBookings.AddAsync(eventBooking);
+            await _unitOfWork.EventBookingRepository.AddAsync(eventBooking);
             await _unitOfWork.CompleteAsync();
 
             var eventBookingDto = eventBooking.ToEventBookingDto();

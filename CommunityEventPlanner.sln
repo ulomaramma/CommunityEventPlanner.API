@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityEventPlanner.API",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityEventPlanner.Client", "CommunityEventPlanner.WasmClient\CommunityEventPlanner.Client.csproj", "{456AFC82-56A8-4662-96F3-C311A224D9EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommunityEventPlanner.UnitTests", "CommunityEventPlanner.UnitTests\CommunityEventPlanner.UnitTests.csproj", "{46DED9AA-0F2F-4079-9ADF-7B704B54F577}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommunityEventPlanner.UnitTests", "CommunityEventPlanner.UnitTests\CommunityEventPlanner.UnitTests.csproj", "{46DED9AA-0F2F-4079-9ADF-7B704B54F577}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -40,7 +40,6 @@ namespace CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser
 
             if (result.Succeeded)
             {
-                // await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
                 var token = await _authService.GenerateJwtToken(user);
                 return new AuthResponse(true, StatusCodes.Status201Created, jwtToken:token, message: "User Registered Sucessfully");
             }

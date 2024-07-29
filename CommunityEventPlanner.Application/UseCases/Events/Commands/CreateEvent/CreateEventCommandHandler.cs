@@ -24,7 +24,7 @@ namespace CommunityEventPlanner.Application.UseCases.Events.Commands.CreateEvent
         public async Task<ApiResponse<EventDto>> Handle(CreateEventCommand request, CancellationToken cancellationToken)
         {
             var newEvent = request.ToEventEntity();
-            await _unitOfWork.Events.AddAsync(newEvent);
+            await _unitOfWork.EventRepository.AddAsync(newEvent);
             await _unitOfWork.CompleteAsync();
             var eventDto = newEvent.ToEventDto();
             return new ApiResponse<EventDto>(true, StatusCodes.Status201Created, eventDto, "Event Created Successfully");

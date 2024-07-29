@@ -9,13 +9,13 @@ namespace CommunityEventPlanner.Application.Interfaces.UnitofWork
 {
     public interface IUnitOfWork: IDisposable
     {
-        IEventRepository Events { get; }
-        IUserRepository Users { get; }
-        IEventBookingRepository EventBookings { get; }
-        ICustomUserLoginRepository CustomUserLogins { get; }
-        IEventAttendeeRepository EventAttendees { get; }
-        IEventOccurrenceRepository EventOccurrences { get; }
-        ITicketRepository Tickets { get; }
+        IEventRepository EventRepository { get; }
+        IUserRepository UserRepository { get; }
+        IEventBookingRepository EventBookingRepository { get; }
+        ICustomUserLoginRepository CustomUserLoginRepository { get; }
+        IEventAttendeeRepository EventAttendeeRepository { get; }
+        IEventOccurrenceRepository EventOccurrencesRepository { get; }
+        ITicketRepository TicketsRepository { get; }
 
         Task<int> CompleteAsync();
     }

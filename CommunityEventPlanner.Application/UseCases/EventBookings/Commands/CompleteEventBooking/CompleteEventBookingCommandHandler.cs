@@ -24,7 +24,7 @@ namespace CommunityEventPlanner.Application.UseCases.EventBookings.Commands.Comp
 
         public async Task<ApiResponse<EventBookingDto>> Handle(CompleteEventBookingCommand request, CancellationToken cancellationToken)
         {
-            var eventBooking = await _unitOfWork.EventBookings.GetByIdAsync(request.EventBookingId);
+            var eventBooking = await _unitOfWork.EventBookingRepository.GetByIdAsync(request.EventBookingId);
             if (eventBooking == null || eventBooking.Status == BookingStatus.Complete)
             {
                 return new ApiResponse<EventBookingDto>(false, StatusCodes.Status404NotFound, message: "Event booking not found or already completed.");

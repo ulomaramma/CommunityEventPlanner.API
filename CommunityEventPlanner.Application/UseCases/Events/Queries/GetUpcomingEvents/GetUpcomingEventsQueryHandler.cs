@@ -23,7 +23,7 @@ namespace CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingE
 
         public async Task <ApiResponse<IEnumerable<EventDto>>> Handle(GetUpcomingEventsQuery request, CancellationToken cancellationToken)
         {
-            var upcomingEvents = await _unitOfWork.Events.GetUpcomingEventsAsync(DateTime.UtcNow);
+            var upcomingEvents = await _unitOfWork.EventRepository.GetUpcomingEventsAsync(DateTime.UtcNow);
             var eventDtos = upcomingEvents.Select(e => e.ToEventDto());
             return new ApiResponse<IEnumerable< EventDto>>(true,StatusCodes.Status200OK,eventDtos);
         }

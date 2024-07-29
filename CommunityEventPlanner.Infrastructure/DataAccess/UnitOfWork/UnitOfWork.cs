@@ -16,22 +16,22 @@ namespace CommunityEventPlanner.Infrastructure.DataAccess.UnitOfWork
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
-            Events = new EventRepository(_context);
-            Users = new UserRepository(_context);
-            EventBookings = new EventBookingRepository(_context);
-            CustomUserLogins = new CustomUserLoginRepository(_context);
-            EventAttendees = new EventAttendeeRepository(_context);
-            EventOccurrences = new EventOccurrenceRepository(_context);
-            Tickets = new TicketRepository(_context);
+            EventRepository = new EventRepository(_context);
+            UserRepository = new UserRepository(_context);
+            EventBookingRepository = new EventBookingRepository(_context);
+            CustomUserLoginRepository = new CustomUserLoginRepository(_context);
+            EventAttendeeRepository = new EventAttendeeRepository(_context);
+            EventOccurrencesRepository = new EventOccurrenceRepository(_context);
+            TicketsRepository = new TicketRepository(_context);
         }
 
-        public IEventRepository Events { get; private set; }
-        public IUserRepository Users { get; private set; }
-        public IEventBookingRepository EventBookings { get; private set; }
-        public ICustomUserLoginRepository CustomUserLogins { get; private set; }
-        public IEventAttendeeRepository EventAttendees { get; private set; }
-        public IEventOccurrenceRepository EventOccurrences { get; private set; }
-        public ITicketRepository Tickets { get; private set; }
+        public IEventRepository EventRepository { get; private set; }
+        public IUserRepository UserRepository { get; private set; }
+        public IEventBookingRepository EventBookingRepository { get; private set; }
+        public ICustomUserLoginRepository CustomUserLoginRepository { get; private set; }
+        public IEventAttendeeRepository EventAttendeeRepository { get; private set; }
+        public IEventOccurrenceRepository EventOccurrencesRepository { get; private set; }
+        public ITicketRepository TicketsRepository { get; private set; }
 
         public async Task<int> CompleteAsync()
         {

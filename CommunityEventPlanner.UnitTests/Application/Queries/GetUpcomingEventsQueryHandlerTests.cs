@@ -11,10 +11,21 @@ using CommunityEventPlanner.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using CommunityEventPlanner.Application.Interfaces.UnitofWork;
 using CommunityEventPlanner.Application.UseCases.Events.Queries.GetUpcomingEvents;
-namespace CommunityEventPlanner.UnitTests.Application.Commands.Handlers
+namespace CommunityEventPlanner.UnitTests.Application.Queries
 {
     public class GetUpcomingEventsQueryHandlerTests
     {
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<IEventRepository> _eventRepositoryMock;
+
+        public GetUpcomingEventsQueryHandlerTests()
+        {
+            _unitOfWorkMock = new Mock<IUnitOfWork>();
+            _eventRepositoryMock = new Mock<IEventRepository>();
+        }
+
+
+
         [Fact]
         public async Task Handle_ShouldReturnUpcomingEvents()
         {
@@ -58,7 +69,7 @@ namespace CommunityEventPlanner.UnitTests.Application.Commands.Handlers
 
             mockEventRepository.Setup(repo => repo.GetUpcomingEventsAsync(It.IsAny<DateTime>()))
                 .ReturnsAsync(events);
-            mockUnitOfWork.Setup(uow => uow.Events).Returns(mockEventRepository.Object);
+            mockUnitOfWork.Setup(uow => uow.EventRepository).Returns(mockEventRepository.Object);
 
             var handler = new GetUpcomingEventsQueryHandler(mockUnitOfWork.Object);
             var query = new GetUpcomingEventsQuery();
