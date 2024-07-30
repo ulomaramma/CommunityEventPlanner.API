@@ -19,11 +19,13 @@ namespace CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IAuthService _authService;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager, IAuthService authService)
+        public RegisterUserCommandHandler(UserManager<ApplicationUser> userManager, IAuthService authService, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _authService = authService;
+            _roleManager = roleManager;
         }
 
         public async Task<AuthResponse> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -40,6 +42,14 @@ namespace CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser
 
             if (result.Succeeded)
             {
+                var defaultRole = "User";
+                if (!await _roleManager.RoleExistsAsync(defaultRole))
+                {
+                    await _roleManager.CreateAsync(new IdentityRole(defaultRole));
+                }
+                await _userManager.AddToRoleAsync(user, defaultRole);
+
+               
                 var token = await _authService.GenerateJwtToken(user);
                 return new AuthResponse(true, StatusCodes.Status201Created, jwtToken:token, message: "User Registered Sucessfully");
             }

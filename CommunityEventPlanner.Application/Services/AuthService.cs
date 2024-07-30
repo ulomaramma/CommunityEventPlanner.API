@@ -17,6 +17,7 @@ namespace CommunityEventPlanner.Application.Services
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AuthService(IConfiguration configuration, UserManager<ApplicationUser> userManager)
         {
@@ -28,6 +29,7 @@ namespace CommunityEventPlanner.Application.Services
         public async Task<string> GenerateJwtToken(ApplicationUser user)
         {
             var userClaims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
 
             var claims = new List<Claim>
             {
@@ -35,8 +37,16 @@ namespace CommunityEventPlanner.Application.Services
                 new Claim(JwtRegisteredClaimNames.Sub,user.Id),
                 new Claim(JwtRegisteredClaimNames.Name,user.UserName),
 
-            };      
+            };
+            // Add role claims
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim("roles", role));
+            }
+
+            // Include any additional userClaims if necessary
             claims.AddRange(userClaims);
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var expiry = DateTime.UtcNow.AddHours(1);
