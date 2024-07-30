@@ -2,6 +2,7 @@
 using CommunityEventPlanner.Application.UseCases.Users.Command.LoginUser;
 using CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +21,7 @@ namespace CommunityEventPlanner.API.Controllers
 
 
         [HttpPost("sign-up")]
+
         public async Task<IActionResult> Register([FromBody] RegisterUserCommand command)
         {
             var response = await _mediator.Send(command);

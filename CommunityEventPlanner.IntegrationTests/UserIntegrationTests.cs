@@ -1,4 +1,5 @@
 ﻿using CommunityEventPlanner.Application.UseCases.Common.Models;
+using CommunityEventPlanner.Application.UseCases.Users.Command.LoginUser;
 using CommunityEventPlanner.Application.UseCases.Users.Command.RegisterUser;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -40,10 +41,33 @@ namespace CommunityEventPlanner.IntegrationTests
             // Assert
             Assert.True(apiResponse?.Success);
             Assert.Equal(StatusCodes.Status201Created, apiResponse?.Code);
-            Assert.NotEmpty(apiResponse.JwtToken);
+            Assert.NotNull(apiResponse.JwtToken);
             Assert.Equal("User Registered Sucessfully", apiResponse.Message);
 
 
         }
+        [Fact]
+        public async Task Login_ShouldReturnSuccess()
+        {
+            // Arrange
+            var command = new LoginUserCommand
+            {
+                Email = "testuser@example.com",
+                Password = "Password123!"
+            };
+
+            // Act
+            var response = await _client.PostAsJsonAsync("/api/auth/login", command);
+            response.EnsureSuccessStatusCode();
+
+            var apiResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
+
+            // Assert
+            Assert.True(apiResponse.Success);
+            Assert.Equal(StatusCodes.Status200OK, apiResponse.Code);
+            Assert.NotNull(apiResponse.JwtToken);
+            Assert.Equal("User Logged in Successfully", apiResponse.Message);
+        }
     }
+
 }

@@ -10,6 +10,7 @@ namespace CommunityEventPlanner.UnitTests.Application.Commands.Handlers
     {
         private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
         private readonly Mock<IAuthService> _authServiceMock;
+        private readonly Mock<RoleManager<IdentityRole>> _mockRoleManager;
         private readonly RegisterUserCommandHandler _handler;
 
         public RegisterUserCommandHandlerTests()
@@ -17,7 +18,9 @@ namespace CommunityEventPlanner.UnitTests.Application.Commands.Handlers
             var userStoreMock = new Mock<IUserStore<ApplicationUser>>();
             _userManagerMock = new Mock<UserManager<ApplicationUser>>(userStoreMock.Object, null, null, null, null, null, null, null, null);
             _authServiceMock = new Mock<IAuthService>();
-            _handler = new RegisterUserCommandHandler(_userManagerMock.Object, _authServiceMock.Object);
+            _mockRoleManager = new Mock<RoleManager<IdentityRole>>(
+            new Mock<IRoleStore<IdentityRole>>().Object,null, null, null, null);
+            _handler = new RegisterUserCommandHandler(_userManagerMock.Object, _authServiceMock.Object, _mockRoleManager.Object);
         }
 
         [Fact]
@@ -41,6 +44,8 @@ namespace CommunityEventPlanner.UnitTests.Application.Commands.Handlers
             };
 
             _userManagerMock.Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), request.Password)).ReturnsAsync(IdentityResult.Success);
+            _userManagerMock.Setup(x => x.AddToRoleAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+            _mockRoleManager.Setup(x => x.RoleExistsAsync(It.IsAny<string>())).ReturnsAsync(true);
             _authServiceMock.Setup(x => x.GenerateJwtToken(It.IsAny<ApplicationUser>())).ReturnsAsync("sample-mocked-jwt-token");
 
             // Act

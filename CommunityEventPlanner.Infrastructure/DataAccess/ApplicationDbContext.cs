@@ -72,8 +72,21 @@ namespace CommunityEventPlanner.Infrastructure.DataAccess
         //        }
         //    }
         //}
-        public  async Task SeedUsers(UserManager<ApplicationUser> userManager)
+       
+        public  async Task SeedUsersAndRoles(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
+            // Seed Roles
+            if (!roleManager.Roles.Any())
+            {
+                var roles = new List<string> { "Admin", "User" };
+
+                foreach (var role in roles)
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+
+            // Seed Users
             if (!userManager.Users.Any())
             {
                 var user = new ApplicationUser
@@ -85,9 +98,14 @@ namespace CommunityEventPlanner.Infrastructure.DataAccess
                     EmailConfirmed = true
                 };
 
-                var result = await userManager.CreateAsync(user, "P@ssw0rd");             
+                var result = await userManager.CreateAsync(user, "P@ssw0rd");
+
+                if (result.Succeeded)
+                {
+                    // Assign User to Role
+                    await userManager.AddToRoleAsync(user, "User");
+                }
             }
         }
-
     }
 }

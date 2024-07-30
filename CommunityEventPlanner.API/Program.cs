@@ -99,9 +99,10 @@ using (var scope = app.Services.CreateScope())
     {
         var context = services.GetRequiredService<ApplicationDbContext>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
         context.Database.Migrate();
-        await context.SeedUsers(userManager);
+        await context.SeedUsersAndRoles(userManager, roleManager);
     }
     catch (Exception ex)
     {
