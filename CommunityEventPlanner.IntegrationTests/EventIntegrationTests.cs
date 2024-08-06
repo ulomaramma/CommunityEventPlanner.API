@@ -13,10 +13,16 @@ using System.Threading.Tasks;
 using Xunit;
 namespace CommunityEventPlanner.IntegrationTests
 {
-    public class EventIntegrationTests : IntegrationTestBase
+    public class EventIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
-        public EventIntegrationTests(WebApplicationFactory<Program> factory) : base(factory) { }
 
+        private readonly HttpClient _client;
+        private readonly CustomWebApplicationFactory<Program> _factory;
+        public EventIntegrationTests(CustomWebApplicationFactory<Program> factory)
+        {
+            _factory = factory;
+            _client = _factory.CreateClient();
+        }
         [Fact]
         public async Task CreateEvent_ShouldReturnSuccess()
         {

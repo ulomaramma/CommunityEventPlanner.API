@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommunityEventPlanner.API\CommunityEventPlanner.API.csproj" />
     <ProjectReference Include="..\CommunityEventPlanner.Infrastructure\CommunityEventPlanner.Infrastructure.csproj" />
   </ItemGroup>
 

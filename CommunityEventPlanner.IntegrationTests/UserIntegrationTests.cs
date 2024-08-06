@@ -13,11 +13,15 @@ using System.Threading.Tasks;
 
 namespace CommunityEventPlanner.IntegrationTests
 {
-    public class UserIntegrationTests : IntegrationTestBase
+    public class UserIntegrationTests : IClassFixture<CustomWebApplicationFactory<Program>>
     {
-        public UserIntegrationTests(WebApplicationFactory<Program> factory) : base(factory)
-        {
+        private readonly HttpClient _client;
+        private readonly CustomWebApplicationFactory<Program> _factory;
 
+        public UserIntegrationTests(CustomWebApplicationFactory<Program> factory)
+        {
+            _factory = factory;
+            _client = _factory.CreateClient();
         }
 
         [Fact]
@@ -52,8 +56,8 @@ namespace CommunityEventPlanner.IntegrationTests
             // Arrange
             var command = new LoginUserCommand
             {
-                Email = "testuser@example.com",
-                Password = "Password123!"
+                Email = "maggiluca@example.com",
+                Password = "Password123!",
             };
 
             // Act

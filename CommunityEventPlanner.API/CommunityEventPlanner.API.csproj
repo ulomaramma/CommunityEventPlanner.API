@@ -20,4 +20,8 @@
     <ProjectReference Include="..\CommunityEventPlanner.Infrastructure\CommunityEventPlanner.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="CommunityEventPlanner.IntegrationTests" />
+  </ItemGroup>
+  
 </Project>
